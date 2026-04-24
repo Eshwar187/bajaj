@@ -64,6 +64,148 @@
   --font-size-code-label: 12px;
 }
 
+/* ─── Theme Variables (Dark = default) ─────────────────────── */
+
+:root {
+  /* Surfaces */
+  --s0: #000000;
+  --s1: #0A0A0A;
+  --s1-deep: #050505;
+  --s2: #121212;
+  --s3: #1a1a1a;
+  --s4: #2a2a2a;
+
+  /* Borders */
+  --b1: #1F1F1F;
+  --b2: #262626;
+  --b3: #333333;
+  --b4: #404040;
+  --b5: #444748;
+
+  /* Text */
+  --t0: #ffffff;
+  --t1: #e5e2e1;
+  --t2: #a1a1aa;
+  --t3: #71717a;
+  --t4: #52525b;
+
+  /* Accent (primary button) */
+  --accent: #ffffff;
+  --accent-text: #000000;
+  --accent-hover: #e4e4e7;
+
+  /* Error */
+  --err-surface: #120000;
+  --err-border: #400000;
+  --err-text: #ffb4ab;
+
+  /* Warning */
+  --warn-surface: rgba(113, 63, 18, 0.1);
+  --warn-border: rgba(113, 63, 18, 0.3);
+  --warn-text: #facc15;
+
+  /* Teal accent */
+  --teal: #3cddc7;
+  --teal-bg: #003731;
+  --teal-border: #007165;
+
+  /* Graph nodes */
+  --node-bg: #121212;
+  --node-border: #404040;
+  --node-root-bg: #e2e2e2;
+  --node-root-border: #ffffff;
+  --node-root-text: #000000;
+  --node-root-glow: rgba(255, 255, 255, 0.2);
+  --edge-color: #404040;
+  --edge-hover: #ffffff;
+
+  /* Status badges */
+  --badge-active-bg: #003731;
+  --badge-active-border: #005047;
+  --badge-active-text: #62fae3;
+  --badge-default-bg: #353534;
+  --badge-default-border: #474646;
+  --badge-default-text: #d4d4d8;
+
+  /* Grid dots */
+  --grid-dot: #ffffff;
+
+  /* Scrollbar */
+  --scrollbar-thumb: #333;
+  --scrollbar-hover: #555;
+}
+
+/* ─── Light Theme ──────────────────────────────────────────── */
+
+[data-theme="light"] {
+  /* Surfaces */
+  --s0: #ffffff;
+  --s1: #f8fafc;
+  --s1-deep: #f1f5f9;
+  --s2: #f1f5f9;
+  --s3: #e2e8f0;
+  --s4: #cbd5e1;
+
+  /* Borders */
+  --b1: #e2e8f0;
+  --b2: #cbd5e1;
+  --b3: #94a3b8;
+  --b4: #64748b;
+  --b5: #94a3b8;
+
+  /* Text */
+  --t0: #0f172a;
+  --t1: #1e293b;
+  --t2: #475569;
+  --t3: #64748b;
+  --t4: #94a3b8;
+
+  /* Accent (primary button) */
+  --accent: #0f172a;
+  --accent-text: #ffffff;
+  --accent-hover: #1e293b;
+
+  /* Error */
+  --err-surface: #fef2f2;
+  --err-border: #fecaca;
+  --err-text: #dc2626;
+
+  /* Warning */
+  --warn-surface: #fffbeb;
+  --warn-border: #fde68a;
+  --warn-text: #d97706;
+
+  /* Teal accent */
+  --teal: #0d9488;
+  --teal-bg: #ccfbf1;
+  --teal-border: #5eead4;
+
+  /* Graph nodes */
+  --node-bg: #ffffff;
+  --node-border: #cbd5e1;
+  --node-root-bg: #0f172a;
+  --node-root-border: #334155;
+  --node-root-text: #ffffff;
+  --node-root-glow: rgba(15, 23, 42, 0.15);
+  --edge-color: #94a3b8;
+  --edge-hover: #0f172a;
+
+  /* Status badges */
+  --badge-active-bg: #ccfbf1;
+  --badge-active-border: #5eead4;
+  --badge-active-text: #0d9488;
+  --badge-default-bg: #f1f5f9;
+  --badge-default-border: #cbd5e1;
+  --badge-default-text: #475569;
+
+  /* Grid dots */
+  --grid-dot: #0f172a;
+
+  /* Scrollbar */
+  --scrollbar-thumb: #cbd5e1;
+  --scrollbar-hover: #94a3b8;
+}
+
 * {
   box-sizing: border-box;
 }
@@ -71,8 +213,9 @@
 body {
   margin: 0;
   font-family: var(--font-family-body-base);
-  background-color: var(--color-background);
-  color: var(--color-on-surface);
+  background-color: var(--s0);
+  color: var(--t1);
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 /* ─── Micro-animations ─────────────────────────────────────── */
@@ -109,6 +252,11 @@ body {
   to { stroke-dashoffset: -14; }
 }
 
+@keyframes themeSpin {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+
 .animate-slide-up {
   animation: slideUp 0.5s cubic-bezier(0.16, 1, 0.3, 1) both;
 }
@@ -133,6 +281,12 @@ body {
   animation: dashMove 0.8s linear infinite;
 }
 
+/* ─── Theme-aware transitions ──────────────────────────────── */
+
+.theme-transition {
+  transition: background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease, box-shadow 0.3s ease;
+}
+
 /* ─── Smooth scrollbar ─────────────────────────────────────── */
 
 ::-webkit-scrollbar {
@@ -145,10 +299,10 @@ body {
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #333;
+  background: var(--scrollbar-thumb);
   border-radius: 3px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #555;
+  background: var(--scrollbar-hover);
 }
